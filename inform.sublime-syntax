@@ -12,11 +12,16 @@ scope: source.inform
 
 variables:
   ident: '\b[a-zA-Z_]+[a-zA-Z0-9]*\b'
+  
   messages: '(Answer|Ask|Attack|Blow|Burn|Buy|Climb|Close|Catch|Consult|Cut|Dig|Disrobe|Drink|Drop|Eat|Enter|Examine|Exit|Fill|FullScore|GetOff|Give|Go|Insert|Inv|Jump|JumpOver|Kiss|Listen|LMode1|LMode2|LMode3|Lock|Look|LookUnder|Mild|ListMiscellany|Miscellany|No|Yes|NotifyOff|NotifyOn|Open|Order|Pray|Prompt|Pull|Push|PushDir|PutOn|Quit|Remove|Restart|Restore|Rub|Save|Score|ScriptOn|ScriptOff|Search|Set|SetTo|Show|Sing|Sleep|Smell|Sorry|Squeeze|Strong|Swim|Swing|SwitchOff|SwitchOn|Take|Taste|Tell|Touch|Think|Tie|ThrowAt|Turn|Unlock|VagueGo|Verify|Wait|Wake|WakeOther|Wave|WaveHands|Wear|Yes)'
+
+  lib_props: '(n_to|s_to|e_to|w_to|ne_to|nw_to|se_to|sw_to|in_to|out_to|u_to|d_to|add_to_scope|after|article|before|article|articles|cant_go|capacity|daemon|describe|description|door_dir|door_to|each_turn|found_in|grammer|initial|inside_description|invent|life|list_together|name|number|orders|parse_name|plural|react_after|react_before|short_name|sort_name_indef|time_left|time_out|when_closed|when_open|when_on|when_off|with_key)'
 
 contexts:
 
   main:
+    - include: class
+    - include: properties
     - include: library_messages
     - include: vars
     - include: operators
@@ -75,14 +80,21 @@ contexts:
     - match: '==|>=|<=|>='
       scope: keyword.operator.logical
 
+  class:
+    - match: \b(Class|Object|Array|Verb|Property)\b
+      scope: entity.name.class
+
   directives:
-    - match: \b(Abbreviate|Array|Attribute|Class|Constant|Default|End|Endif|Extend|Global|Ifdef|Ifndef|Ifnot|Iftrue|Iffalse|Import|Include|Link|Lowstring|Message|Object|Property|Release|Replace|Serial|Switches|Statusline(\s+)(score|time)|System_file|Verb|Zcharacter)\b
+    - match: \b(Abbreviate||Attribute|Constant|Default|End|Endif|Extend|Global|Ifdef|Ifndef|Ifnot|Iftrue|Iffalse|Import|Include|Link|Lowstring|Message|Release|Replace|Serial|Switches|Statusline(\s+)(score|time)|System_file|Zcharacter)\b
       scope: keyword.other.directive.inform
 
+  properties:
+    - match: \b({{lib_props}})\b
+      scope: variable.other.member
 
   library_messages:
     - match: '({{messages}})(,\s*{{messages}})*:'
-      scope: variable.constant
+      scope: keyword.control.conditional
 
   comments:
     - match: (!)(.*)$\n?
