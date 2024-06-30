@@ -81,11 +81,11 @@ contexts:
       scope: keyword.operator.logical
 
   class:
-    - match: \b(Class|Object|Array|Verb|Property)\b
+    - match: \b(Class|Object|Array|Verb|Property|Extend)\b
       scope: entity.name.class
 
   directives:
-    - match: \b(Abbreviate||Attribute|Constant|Default|End|Endif|Extend|Global|Ifdef|Ifndef|Ifnot|Iftrue|Iffalse|Import|Include|Link|Lowstring|Message|Release|Replace|Serial|Switches|Statusline(\s+)(score|time)|System_file|Zcharacter)\b
+    - match: \b(Abbreviate||Attribute|Constant|Default|End|Endif|Global|Ifdef|Ifndef|Ifnot|Iftrue|Iffalse|Import|Include|Link|Lowstring|Message|Release|Replace|Serial|Switches|Statusline(\s+)(score|time)|System_file|Zcharacter)\b
       scope: keyword.other.directive.inform
 
   properties:
