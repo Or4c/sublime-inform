@@ -12,11 +12,17 @@ scope: source.inform
 
 variables:
   ident: '\b[a-zA-Z_]+[a-zA-Z0-9]*\b'
+  messages: '(Answer|Ask|Attack|Blow|Burn|Buy|Climb|Close|Catch|Consult|Cut|Dig|Disrobe|Drink|Drop|Eat|Enter|Examine|Exit|Fill|FullScore|GetOff|Give|Go|Insert|Inv|Jump|JumpOver|Kiss|Listen|LMode1|LMode2|LMode3|Lock|Look|LookUnder|Mild|ListMiscellany|Miscellany|No|Yes|NotifyOff|NotifyOn|Open|Order|Pray|Prompt|Pull|Push|PushDir|PutOn|Quit|Remove|Restart|Restore|Rub|Save|Score|ScriptOn|ScriptOff|Search|Set|SetTo|Show|Sing|Sleep|Smell|Sorry|Squeeze|Strong|Swim|Swing|SwitchOff|SwitchOn|Take|Taste|Tell|Touch|Think|Tie|ThrowAt|Turn|Unlock|VagueGo|Verify|Wait|Wake|WakeOther|Wave|WaveHands|Wear|Yes)'
 
 contexts:
 
   main:
+    - include: library_messages
+    - include: vars
+    - include: operators
+    - include: punct_keyword
     - include: directives
+    - include: conditional
     - include: control
     - include: strings
     - include: functions
@@ -34,12 +40,49 @@ contexts:
       scope: constant.numeric.inform
 
   control:
-    - match: \b(box|break|continue|do|else|font(\s+)(on|off)|for|give|if|jump|new_line|objectloop|print|print_ret|remove|return|rfalse|rtrue|spaces|string|style(\s+)(roman|bold|underline|reverse|fixed)|switch|until|while|has|hasnt|in|notin|ofclass|provides|or|with)\b
+    - match: \b(box|break|continue|font(\s+)(on|off)|for|give|jump|new_line|objectloop|print|print_ret|remove|return|rfalse|rtrue|spaces|string|style(\s+)(roman|bold|underline|reverse|fixed)|switch|until|with)\b
       scope: keyword.control.inform
+
+  conditional:
+    - match: \b(if|else|while|do)\b
+      scope: keyword.control.conditional
+
+  punct_keyword:
+    - match: (<<|>>)
+      scope: punctuation.definition.keyword
+
+  operators:
+    - include: operator
+    - include: operator_assign
+    - include: operator_logical
+
+  vars:
+    - include: language_vars
+
+  language_vars:
+    - match: \b(self|true|false)\b
+      scope: variable.language
+
+  operator:
+    - match: \b(in|notin|ofclass|provides|or|has|hasnt|->)\b
+      scope: keyword
+
+  operator_assign:
+    - match: =
+      scope: keyword.operator.assignment
+
+  operator_logical:
+    - match: '==|>=|<=|>='
+      scope: keyword.operator.logical
 
   directives:
     - match: \b(Abbreviate|Array|Attribute|Class|Constant|Default|End|Endif|Extend|Global|Ifdef|Ifndef|Ifnot|Iftrue|Iffalse|Import|Include|Link|Lowstring|Message|Object|Property|Release|Replace|Serial|Switches|Statusline(\s+)(score|time)|System_file|Verb|Zcharacter)\b
       scope: keyword.other.directive.inform
+
+
+  library_messages:
+    - match: '({{messages}})(,\s*{{messages}})*:'
+      scope: variable.constant
 
   comments:
     - match: (!)(.*)$\n?
