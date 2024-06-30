@@ -21,14 +21,13 @@ contexts:
     - include: strings
     - include: functions
     - include: comments
-    - include: literals
+    - include: literal_numeric
     - include: function_call
 
   function_call:
-    - match: '{{ident}}\((\b\w+\b(,\s*\b\w+\b)*)*\)\s*;'
-      scope: variable.function
+    - match: '({{ident}})\('
       captures:
-        
+        1: variable.function
   
   literal_numeric:
     - match: '\b((\$[0-9a-fA-F]*)|(([0-9]+\.?[0-9]*)|(\.[0-9]+))((e|E)(\+|-)?[0-9]+)?)(L|l|UL|ul|u|U|F|f)?\b'
@@ -41,7 +40,6 @@ contexts:
   directives:
     - match: \b(Abbreviate|Array|Attribute|Class|Constant|Default|End|Endif|Extend|Global|Ifdef|Ifndef|Ifnot|Iftrue|Iffalse|Import|Include|Link|Lowstring|Message|Object|Property|Release|Replace|Serial|Switches|Statusline(\s+)(score|time)|System_file|Verb|Zcharacter)\b
       scope: keyword.other.directive.inform
-
 
   comments:
     - match: (!)(.*)$\n?
