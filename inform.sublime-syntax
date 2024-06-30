@@ -1,0 +1,84 @@
+%YAML 1.2
+---
+# http://www.sublimetext.com/docs/syntax.html
+
+name: Inform 6
+
+file_extensions:
+  - inf
+  - h
+
+scope: source.inform
+
+variables:
+  ident: '\b[a-zA-Z_]+[a-zA-Z0-9]*\b'
+
+contexts:
+
+  main:
+    - include: directives
+    - include: control
+    - include: strings
+    - include: functions
+    - include: comments
+    - include: literals
+    - include: function_call
+
+  function_call:
+    - match: '{{ident}}\((\b\w+\b(,\s*\b\w+\b)*)*\)\s*;'
+      scope: variable.function
+      captures:
+        
+  
+  literal_numeric:
+    - match: '\b((\$[0-9a-fA-F]*)|(([0-9]+\.?[0-9]*)|(\.[0-9]+))((e|E)(\+|-)?[0-9]+)?)(L|l|UL|ul|u|U|F|f)?\b'
+      scope: constant.numeric.inform
+
+  control:
+    - match: \b(box|break|continue|do|else|font(\s+)(on|off)|for|give|if|jump|new_line|objectloop|print|print_ret|remove|return|rfalse|rtrue|spaces|string|style(\s+)(roman|bold|underline|reverse|fixed)|switch|until|while|has|hasnt|in|notin|ofclass|provides|or|with)\b
+      scope: keyword.control.inform
+
+  directives:
+    - match: \b(Abbreviate|Array|Attribute|Class|Constant|Default|End|Endif|Extend|Global|Ifdef|Ifndef|Ifnot|Iftrue|Iffalse|Import|Include|Link|Lowstring|Message|Object|Property|Release|Replace|Serial|Switches|Statusline(\s+)(score|time)|System_file|Verb|Zcharacter)\b
+      scope: keyword.other.directive.inform
+
+
+  comments:
+    - match: (!)(.*)$\n?
+      scope: comment.line.exclamation.inform
+      captures:
+        1: punctuation.definition.comment.inform
+
+  functions:
+    - match: '(?:\s*)\[(?:\s*)(.*)(?:\s*);'
+      scope: meta.function.inform
+      captures:
+        1: entity.name.function.inform
+
+  strings:
+    - include: strings_single
+    - include: strings_double
+
+  strings_single:
+    - match: "'"
+      captures:
+        0: punctuation.definition.string.begin.inform
+      push:
+        - meta_scope: string.quoted.single.inform
+        - match: "'"
+          captures:
+            0: punctuation.definition.string.end.inform
+          pop: true
+        - match: \\.
+          scope: constant.character.escape.inform
+
+  strings_double:
+    - match: '"'
+      captures:
+        0: punctuation.definition.string.begin.inform
+      push:
+        - meta_scope: string.quoted.double.inform
+        - match: '"'
+          captures:
+            0: punctuation.definition.string.end.inform
+          pop: true
