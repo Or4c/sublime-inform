@@ -1,0 +1,11 @@
+{
+	"compiler_path": "inform",
+	"std_library_path": "home/sam/.local/share/inform/std/lib",
+	"output_dir":"$project_path",
+	"includes": ["$project_path", "$project_path/include"],
+	"extensions":
+	[
+		"inf",
+		"h"
+	]
+}

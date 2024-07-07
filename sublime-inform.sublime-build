@@ -1,0 +1,7 @@
+// Build system for Inform 6
+
+{
+	"selector" : "source.inform",
+	"file_patterns": [".inf"],
+	"target" : "inform_build"
+}
